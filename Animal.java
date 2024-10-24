@@ -1,4 +1,6 @@
-package Jonathon.zoo.com;
+package dennis.zoo.com;
+
+import java.util.Date;
 
 public class Animal {
     // Create a static int that keep track of the number of animals created.

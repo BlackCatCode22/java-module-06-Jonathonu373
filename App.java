@@ -1,15 +1,14 @@
-// J.U 10/3/24
+// dH 10/3/24
 // zooVersion01.java
 //
-package Jonathon.zoo.com;
+package dennis.zoo.com;
 
 import java.util.Date;
 import java.text.SimpleDateFormat;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.util.ArrayList;
 
 public class App {
 
@@ -64,50 +63,54 @@ public class App {
         // to see how IntelliJ IDEA suggests fixing it.
         System.out.println("Welcome to my Zoo Program!");
 
-        // This is all of the date stuff we did last week:
-        // Create a Date object to represent the current date
-        Date today = new Date();
+        // Create the animal name lists.
+        // Call Utilities to get the animal name lists
+        String filePath = "C:/Users/BE218/javaZoo/animalNames.txt";  // Update with the correct file path
+        AnimalNameListsWrapper animalLists = Utilities.createAnimalNameLists(filePath);
 
-        // Define the desired date format
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatterYear = new SimpleDateFormat("yyyy");
+        // Access the hyena names list
+        ArrayList<String> listOfHyenaNames = animalLists.getHyenaNameList();
 
-        // Format the date and store it in a string
-        String strTodaysDate = formatter.format(today);
-        String strTodaysYear = formatterYear.format(today);
+        // Use a for-each loop to output each hyena name
+        System.out.println("Hyena Names:");
+        for (String hyenaName : listOfHyenaNames) {
+            System.out.println(hyenaName);
+        }
 
-        // Output the result
-        System.out.println("Today's date in the format yyyy-MM-dd: " + strTodaysDate);
+        // Similarly, you can do this for the other animal lists
+        ArrayList<String> listOfLionNames = animalLists.getLionNameList();
+        System.out.println("\nLion Names:");
+        for (String lionName : listOfLionNames) {
+            System.out.println(lionName);
+        }
 
-        // Calculate birthdates for the following two hyenas
-        // 1) 4 year old female hyena, born in spring, tan color, 70 pounds, from Friguia Park, Tunisia
-        // 2) 12 year old male hyena, born in fall, brown color, 150 pounds, from Friguia Park, Tunisia
+        ArrayList<String> listOfTigerNames = animalLists.getTigerNameList();
+        System.out.println("\nTiger Names:");
+        for (String tigerName : listOfTigerNames) {
+            System.out.println(tigerName);
+        }
 
-        // Write Java code to calculate birthdates for the animals and then create a method that returns a string
-        // for the animal's birthdate.
+        ArrayList<String> listOfBearNames = animalLists.getBearNameList();
+        System.out.println("\nBear Names:");
+        for (String bearName : listOfBearNames) {
+            System.out.println(bearName);
+        }
 
-        // input: "4 year old female hyena, born in spring"
-        // processing: find the age and birth season
-        //             and then use decision control structures to
-        //             calculate the date.
 
-        // parse the string
-        //Open arrivingAnimals with BufferedFileReader
+
+
         BufferedReader reader = null;
 
         try {
-            // Create a FileReader to read the file
-            FileReader fileReader = new FileReader("arrivingAnimals.txt");
-
-            // Create a BufferedReader to buffer the input from the FileReader
-            reader = new BufferedReader(fileReader);
-
+            // Create a BufferedReader to read the file
+            reader = new BufferedReader(new FileReader("arrivingAnimals.txt"));
             String line;
-            // Read lines from the file until the end is reached
+
+            // Read each line of the file until reaching the end
             while ((line = reader.readLine()) != null) {
                 // Print each line to the console
                 System.out.println(line);
-                // Parse this line with text.
+                // Parse this line of text.
                 String[] arrayOfStrPartsOnComma = line.split(", ");
                 // output the array elements
                 // this is a for : each loop - very handy when examining array elements.
@@ -139,7 +142,7 @@ public class App {
                 System.out.println("The season of birth of the animal is: " + animalBirthSeason);
 
                 // this is a unit test - we are testing the Animal constructor we just created
-                Jonathon.zoo.com.Animal myNewAnimal = new Jonathon.zoo.com.Animal("male", 4, 70, "Zig", "Hy01", "2020-3-21", "brown spots", "from San Diego Zoo");
+                Animal myNewAnimal = new Animal("male", 4, 70, "Zig", "Hy01", "2020-3-21", "brown spots", "from San Diego Zoo");
 
                 // Prove it!
                 System.out.println("\n this is the new animal!\n");
@@ -147,21 +150,21 @@ public class App {
 
                 System.out.println("animal birthdate is: " + calcAnimalBirthDate(Integer.parseInt(ageInYears), animalBirthSeason));
 
+
             }
         } catch (IOException e) {
-            // Handle any I/O exceptions that occur
-            System.out.println("An error occurred while reading the file: " + e.getMessage());
+            // Handle exceptions, such as file not found or I/O errors
+            e.printStackTrace();
         } finally {
-            // Close the reader to free up resources
+            // Close the BufferedReader in the finally block to ensure it gets closed
             try {
                 if (reader != null) {
                     reader.close();
                 }
-            } catch (IOException e) {
-                System.out.println("An error occurred while closing the reader: " + e.getMessage());
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
-
 
     }
 }
