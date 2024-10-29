@@ -1,62 +1,15 @@
 // dH 10/3/24
 // zooVersion01.java
-//
+// revised 10/24/24
+
 package dennis.zoo.com;
 
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class App {
-
-    private static String calcAnimalBirthDate(int age, String theSeason) {
-        // This is all of the date stuff we did last week:
-        // Create a Date object to represent the current date
-        Date today = new Date();
-
-        // Define the desired date format
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatterYear = new SimpleDateFormat("yyyy");
-
-        // Format the date and store it in a string
-        String strTodaysDate = formatter.format(today);
-        String strTodaysYear = formatterYear.format(today);
-
-        // Output the result
-        System.out.println("Today's date in the format yyyy-MM-dd: " + strTodaysDate);
-
-        String animalBirthdate = "";
-        int todaysYear = Integer.parseInt(strTodaysYear);
-        int animalBirthYear = todaysYear - Integer.parseInt(String.valueOf(age));
-
-
-        // Normalize the input season to lower case for case-insensitive comparison
-        String season = theSeason.toLowerCase();
-
-        switch (season) {
-            case "spring":
-                animalBirthdate = Integer.toString(animalBirthYear) + "-03-21";
-                break;
-            case "fall":
-                animalBirthdate = Integer.toString(animalBirthYear) + "-09-21";
-                break;
-            case "winter":
-                animalBirthdate = Integer.toString(animalBirthYear) + "-12-21";
-                break;
-            case "summer":
-                animalBirthdate = Integer.toString(animalBirthYear) + "-06-21";
-                break;
-            default:
-                animalBirthdate = Integer.toString(animalBirthYear) + "-01-01"; // Default case for anything else
-                break;
-        }
-
-        return animalBirthdate;
-
-    }
 
     public static void main(String[] args) {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
@@ -65,7 +18,7 @@ public class App {
 
         // Create the animal name lists.
         // Call Utilities to get the animal name lists
-        String filePath = "C:/Users/BE218/javaZoo/animalNames.txt";  // Update with the correct file path
+        String filePath = "animalNames.txt";  // Update with the correct file path
         AnimalNameListsWrapper animalLists = Utilities.createAnimalNameLists(filePath);
 
         // Access the hyena names list
@@ -96,10 +49,10 @@ public class App {
             System.out.println(bearName);
         }
 
-
-
-
         BufferedReader reader = null;
+
+        String aniSex;
+        String aniSpecies;
 
         try {
             // Create a BufferedReader to read the file
@@ -119,6 +72,18 @@ public class App {
                     System.out.println("Element " + elementNum + " of arrayOfStrPartsOnComma is: " + thePart);
                     elementNum++;
                 }
+                String aniColor;
+                String aniWeight;
+                String aniOrigin01;
+                String aniOrigin02;
+                String aniAge;
+
+                aniColor = arrayOfStrPartsOnComma[2];
+                aniWeight = arrayOfStrPartsOnComma[3];
+                aniOrigin01 = arrayOfStrPartsOnComma[4];
+                aniOrigin02 = arrayOfStrPartsOnComma[5];
+
+
                 System.out.println();
                 String[] arrayOfStrPartsOnSpace = arrayOfStrPartsOnComma[0].split(" ");
                 elementNum = 0;
@@ -126,6 +91,19 @@ public class App {
                     System.out.println("Element " + elementNum + " of arrayOfStrPartsOnSpace is: " + thePart);
                     elementNum++;
                 }
+                // Get animal's sex and species and age
+                aniAge = arrayOfStrPartsOnSpace[0];
+                // make this an int.
+                int intAniAge = Integer.parseInt(aniAge);
+                aniSex = arrayOfStrPartsOnSpace[3];
+                aniSpecies = arrayOfStrPartsOnSpace[4];
+                System.out.println("\n The animal's sex is " + aniSex);
+                System.out.println("\n The species is " + aniSpecies);
+                System.out.println("\n The color is " + aniColor);
+                System.out.println("\n The weight is " + aniWeight);
+                System.out.println("\n Origin01 is " + aniOrigin01);
+                System.out.println("\n Origin02 is " + aniOrigin02);
+
                 System.out.println();
 
                 String[] arrayOfStrPartsOnSpace02 = arrayOfStrPartsOnComma[1].split(" ");
@@ -141,6 +119,17 @@ public class App {
                 System.out.println("The age in years of the animal is: " + ageInYears);
                 System.out.println("The season of birth of the animal is: " + animalBirthSeason);
 
+                // Create the right animal object for this arriving animal.
+                if (aniSpecies.equals("hyena")) {
+                    System.out.println("\n The animal is a hyena!");
+                    // Create a hyena object and attach to the hyena ArrayList;
+                    Hyena hyena = new Hyena(aniSex, intAniAge, 99, "to be named",
+                            "animalID", "animalBirthDate", aniColor,
+                            aniOrigin01 + aniOrigin02);
+                    System.out.println(" The new hyena's color is :" + hyena.getAnimalColor());
+                }
+
+
                 // this is a unit test - we are testing the Animal constructor we just created
                 Animal myNewAnimal = new Animal("male", 4, 70, "Zig", "Hy01", "2020-3-21", "brown spots", "from San Diego Zoo");
 
@@ -148,7 +137,7 @@ public class App {
                 System.out.println("\n this is the new animal!\n");
                 System.out.println("\n ID is: " + myNewAnimal.getAnimalID() + " and... name is: " + myNewAnimal.getAnimalName() + "\n");
 
-                System.out.println("animal birthdate is: " + calcAnimalBirthDate(Integer.parseInt(ageInYears), animalBirthSeason));
+                System.out.println("animal birthdate is: " + Utilities.calcAnimalBirthDate(Integer.parseInt(ageInYears), animalBirthSeason));
 
 
             }
